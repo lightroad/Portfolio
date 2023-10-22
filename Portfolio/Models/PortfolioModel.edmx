@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PortfolioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="60" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" />
+          <Property Name="AuthorityID" Type="tinyint" />
+          <Property Name="EncryptionTypeID" Type="tinyint" />
+          <Property Name="UsePeriod" Type="tinyint" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Authority">
+          <Key>
+            <PropertyRef Name="AuthorityID" />
+          </Key>
+          <Property Name="AuthorityID" Type="tinyint" Nullable="false" />
+          <Property Name="AuthorityName" Type="nvarchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="EncryptionType">
+          <Key>
+            <PropertyRef Name="EncryptionTypeID" />
+          </Key>
+          <Property Name="EncryptionTypeID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EncryptionTypeName" Type="nvarchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Portfolio">
+          <Key>
+            <PropertyRef Name="PortfolioID" />
+          </Key>
+          <Property Name="PortfolioID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PortfolioName" Type="nvarchar" MaxLength="16" />
+          <Property Name="DevelopType" Type="nvarchar" MaxLength="20" />
+          <Property Name="DataBaseName" Type="nvarchar" MaxLength="20" />
+          <Property Name="PortfolioDesc" Type="nvarchar(max)" />
+          <Property Name="PortfolioPath" Type="nvarchar" MaxLength="100" />
+          <Property Name="ThumbPath" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <Association Name="FK_Account_AuthorityID_Authority_AuthorityID">
+          <End Role="Authority" Type="Self.Authority" Multiplicity="0..1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authority">
+              <PropertyRef Name="AuthorityID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="AuthorityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Account_EncryptionTypeID_EncryptionType_EncryptionTypeID">
+          <End Role="EncryptionType" Type="Self.EncryptionType" Multiplicity="0..1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncryptionType">
+              <PropertyRef Name="EncryptionTypeID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="EncryptionTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PortfolioModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Authority" EntityType="Self.Authority" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EncryptionType" EntityType="Self.EncryptionType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Portfolio" EntityType="Self.Portfolio" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Account_AuthorityID_Authority_AuthorityID" Association="Self.FK_Account_AuthorityID_Authority_AuthorityID">
+            <End Role="Authority" EntitySet="Authority" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Account_EncryptionTypeID_EncryptionType_EncryptionTypeID" Association="Self.FK_Account_EncryptionTypeID_EncryptionType_EncryptionTypeID">
+            <End Role="EncryptionType" EntitySet="EncryptionType" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PortfolioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AuthorityID" Type="Byte" />
+          <Property Name="EncryptionTypeID" Type="Byte" />
+          <Property Name="UsePeriod" Type="Byte" />
+          <Property Name="CreateDate" Type="DateTime" Precision="7" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Authority" Relationship="Self.FK_Account_AuthorityID_Authority_AuthorityID" FromRole="Account" ToRole="Authority" />
+          <NavigationProperty Name="EncryptionType" Relationship="Self.FK_Account_EncryptionTypeID_EncryptionType_EncryptionTypeID" FromRole="Account" ToRole="EncryptionType" />
+        </EntityType>
+        <EntityType Name="Authority">
+          <Key>
+            <PropertyRef Name="AuthorityID" />
+          </Key>
+          <Property Name="AuthorityID" Type="Byte" Nullable="false" />
+          <Property Name="AuthorityName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="7" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Account_AuthorityID_Authority_AuthorityID" FromRole="Authority" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="EncryptionType">
+          <Key>
+            <PropertyRef Name="EncryptionTypeID" />
+          </Key>
+          <Property Name="EncryptionTypeID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EncryptionTypeName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="7" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Account_EncryptionTypeID_EncryptionType_EncryptionTypeID" FromRole="EncryptionType" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Portfolio">
+          <Key>
+            <PropertyRef Name="PortfolioID" />
+          </Key>
+          <Property Name="PortfolioID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PortfolioName" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="DevelopType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DataBaseName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PortfolioDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PortfolioPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ThumbPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="7" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <Association Name="FK_Account_AuthorityID_Authority_AuthorityID">
+          <End Role="Authority" Type="Self.Authority" Multiplicity="0..1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authority">
+              <PropertyRef Name="AuthorityID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="AuthorityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Account_EncryptionTypeID_EncryptionType_EncryptionTypeID">
+          <End Role="EncryptionType" Type="Self.EncryptionType" Multiplicity="0..1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncryptionType">
+              <PropertyRef Name="EncryptionTypeID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="EncryptionTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PortfolioEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Authorities" EntityType="Self.Authority" />
+          <EntitySet Name="EncryptionTypes" EntityType="Self.EncryptionType" />
+          <EntitySet Name="Portfolios" EntityType="Self.Portfolio" />
+          <AssociationSet Name="FK_Account_AuthorityID_Authority_AuthorityID" Association="Self.FK_Account_AuthorityID_Authority_AuthorityID">
+            <End Role="Authority" EntitySet="Authorities" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Account_EncryptionTypeID_EncryptionType_EncryptionTypeID" Association="Self.FK_Account_EncryptionTypeID_EncryptionType_EncryptionTypeID">
+            <End Role="EncryptionType" EntitySet="EncryptionTypes" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PortfolioModelStoreContainer" CdmEntityContainer="PortfolioEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="PortfolioModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AuthorityID" ColumnName="AuthorityID" />
+                <ScalarProperty Name="EncryptionTypeID" ColumnName="EncryptionTypeID" />
+                <ScalarProperty Name="UsePeriod" ColumnName="UsePeriod" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Authorities">
+            <EntityTypeMapping TypeName="PortfolioModel.Authority">
+              <MappingFragment StoreEntitySet="Authority">
+                <ScalarProperty Name="AuthorityID" ColumnName="AuthorityID" />
+                <ScalarProperty Name="AuthorityName" ColumnName="AuthorityName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EncryptionTypes">
+            <EntityTypeMapping TypeName="PortfolioModel.EncryptionType">
+              <MappingFragment StoreEntitySet="EncryptionType">
+                <ScalarProperty Name="EncryptionTypeID" ColumnName="EncryptionTypeID" />
+                <ScalarProperty Name="EncryptionTypeName" ColumnName="EncryptionTypeName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Portfolios">
+            <EntityTypeMapping TypeName="PortfolioModel.Portfolio">
+              <MappingFragment StoreEntitySet="Portfolio">
+                <ScalarProperty Name="PortfolioID" ColumnName="PortfolioID" />
+                <ScalarProperty Name="PortfolioName" ColumnName="PortfolioName" />
+                <ScalarProperty Name="DevelopType" ColumnName="DevelopType" />
+                <ScalarProperty Name="DataBaseName" ColumnName="DataBaseName" />
+                <ScalarProperty Name="PortfolioDesc" ColumnName="PortfolioDesc" />
+                <ScalarProperty Name="PortfolioPath" ColumnName="PortfolioPath" />
+                <ScalarProperty Name="ThumbPath" ColumnName="ThumbPath" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="없음" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
