@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:Portfolio.ViewModels"
+             xmlns:Menu="clr-namespace:Portfolio.Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Style="{StaticResource Page_Style}" >
@@ -13,8 +14,10 @@
 
     
     <UserControl.Resources>
-        <!--#region 스크롤바 스타일 -->
+        
         <ResourceDictionary>
+
+            <!--#region 스크롤바 스타일 -->
             <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -95,14 +98,188 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <!--#endregion 스크롤바 스타일-->
+
+            <DataTemplate x:Key="A">
+                <!-- #region 레이아웃 1 -->
+
+                <Border Background="DarkGray" CornerRadius="10"  >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="100" />
+                        </Grid.RowDefinitions>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="01" VerticalAlignment="Bottom" Foreground="White" FontWeight="Bold" 
+                                       FontSize="30" Margin="15 10 15 0" />
+                            <TextBlock Text="포트폴리오" VerticalAlignment="Bottom" Foreground="White" FontWeight="Bold"
+                                       FontSize="16" Margin="0 9 0 4" Grid.Column="1" />
+
+                            <TextBlock Foreground="White" VerticalAlignment="Bottom"
+                                       FontSize="16" Margin="0 9 0 4" Grid.Column="2">
+                                <Run Text="DataBase -" />
+                                <Run Text="MsSql" />
+                            </TextBlock>
+
+                            <TextBlock Foreground="White" VerticalAlignment="Bottom"
+                                       FontSize="16" Margin="0 9 0 4" Grid.Column="3">
+                                <Run Text="Tag -" />
+                                <Run Text="#WPF #MVVM" />
+                            </TextBlock>
+
+                            <Button Content="실행" Width="50" Margin="15 12" Grid.Column="4" />
+
+                        </Grid>
+
+                        <Border Background="#CCCCCC" Height="1" Margin="10 0 10 10" Grid.Row="1" />
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border BorderBrush="#CCCCCC"
+                                    Margin="15 0 10 10" BorderThickness="1">
+                                <Image Source="../Images/img_home.png"
+                                       PreviewMouseDown="Image_PreviewMouseDown" />
+                            </Border>
+
+                            <Border x:Name="bd" Grid.Column="2" HorizontalAlignment="Left" >
+                                <TextBlock x:Name="txt" Text="현재 보고 있는 프로젝트.&#10;WPF로 개발했으며 MVVM 디자인 패턴을 적용&#10;데이터베이스는 MSSQL을 사용하고 Entity Framework을 통해 데이터 관리하도록 구현&#10;Style 개별 적용" 
+                                           TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                           Margin="15 0 10 10" Padding="5">
+                                </TextBlock>
+                            </Border>
+
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- #endregion 레이아웃 1 -->
+            </DataTemplate>
+            
+            <DataTemplate x:Key="B">
+                <!-- #region 레이아웃 2 -->
+
+                <Border BorderThickness="2" CornerRadius="5">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                    <Setter Property="BorderBrush" Value="DarkGray" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                    <Setter Property="BorderBrush" Value="Gray" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="130" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--#region No -->
+                        <Border Background="DarkGray" HorizontalAlignment="Left" CornerRadius="5 0 0 0">
+                            <TextBlock Text="{Binding PortfolioID, StringFormat={}{0:D2}}" VerticalAlignment="Bottom" Foreground="White" FontWeight="Bold" 
+                                       FontSize="25" Margin="14 9 12 5" />
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region Title -->
+                        <Border Background="#22343F" Grid.Column="1">
+                            <TextBlock Text="{Binding PortfolioName}" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"
+                                       FontSize="16" Margin="20 9 0 6" />
+                        </Border>
+                        <!--#endregion-->
+
+                        <Border Background="#22343F" Grid.Column="2">
+                            <TextBlock Foreground="White" VerticalAlignment="Center"
+                                       FontSize="16" Margin="0 9 0 6" Grid.Column="2">
+                                <Run Text="DataBase :" />
+                                <Run Text="{Binding DataBaseName}" />
+                            </TextBlock>
+                        </Border>
+
+                        <Border Background="#22343F" Grid.Column="3">
+                            <TextBlock Foreground="White" VerticalAlignment="Center"
+                                       FontSize="16" Margin="0 9 0 6" Grid.Column="3">
+                                <Run Text="Tag :" />
+                                <Run Text="{Binding DevelopType}" />
+                            </TextBlock>
+                        </Border>
+
+                        <Border Background="#22343F" CornerRadius="0 5 0 0" Grid.Column="4">
+                            <TextBlock Text="Run" Foreground="#00CCFF" FontWeight="Bold" TextDecorations="Underline"
+                                       Cursor="Hand"
+                                       FontSize="16" Margin="14 0">
+                                <Hyperlink Command="" NavigateUri="https://naver.com" />    
+                            </TextBlock>
+                        </Border>
+
+                        <Border Background="DarkGray" CornerRadius="0 0 5 5" Grid.Row="1" Grid.ColumnSpan="5" >
+                            <Grid Margin="0 12 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="170" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Border BorderBrush="#777777"
+                                        Margin="15 1 10 14" BorderThickness="1">
+                                    <Image Source="{Binding ThumbPath}" Stretch="Fill" Cursor="Hand"
+                                           Margin="5"
+                                           PreviewMouseDown="Image_PreviewMouseDown" /> 
+                                </Border>
+
+                                <TextBlock x:Name="txt" Text="{Binding PortfolioDescription}" 
+                                           TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                           LineStackingStrategy="BlockLineHeight" 
+                                           MaxWidth="500" LineHeight="20" Margin="15 2 10 10" Padding="1" Grid.Column="1" >
+                                </TextBlock>
+
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+                </Border>
+
+                <!-- #endregion 레이아웃 2 -->
+
+            </DataTemplate>
+
         </ResourceDictionary>
-        <!--#endregion 스크롤바 스타일-->
+        
+        
+        
+        
     </UserControl.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="45" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -119,6 +296,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                  ScrollViewer.CanContentScroll="False"
                  Background="Transparent"
+                 ItemTemplate="{StaticResource A}"
                  ItemsSource="{Binding Portfolios}"
                  BorderThickness="0 0 1 0" Padding="5 -10 0 5" Margin="54,50,60,40" Grid.Row="2">
             <ListBox.ItemContainerStyle>
@@ -129,192 +307,30 @@
                     <Setter Property="BorderThickness" Value="0" />
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <!-- #region 레이아웃 1 -->
-                    
-                    <!--<Border Background="DarkGray" CornerRadius="10"  >
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="100" />
-                            </Grid.RowDefinitions>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="160" />
-                                    <ColumnDefinition Width="160" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Text="01" VerticalAlignment="Bottom" Foreground="White" FontWeight="Bold" 
-                                           FontSize="30" Margin="15 10 15 0" />
-                                <TextBlock Text="포트폴리오" VerticalAlignment="Bottom" Foreground="White" FontWeight="Bold"
-                                           FontSize="16" Margin="0 9 0 4" Grid.Column="1" />
-
-                                <TextBlock Foreground="White" VerticalAlignment="Bottom"
-                                           FontSize="16" Margin="0 9 0 4" Grid.Column="2">
-                                    <Run Text="DataBase -" />
-                                    <Run Text="MsSql" />
-                                </TextBlock>
-
-                                <TextBlock Foreground="White" VerticalAlignment="Bottom"
-                                           FontSize="16" Margin="0 9 0 4" Grid.Column="3">
-                                    <Run Text="Tag -" />
-                                    <Run Text="#WPF #MVVM" />
-                                </TextBlock>
-
-                                <Button Content="실행" Width="50" Margin="15 12" Grid.Column="4" />
-
-                            </Grid>
-
-                            <Border Background="#CCCCCC" Height="1" Margin="10 0 10 10" Grid.Row="1" />
-
-                            <Grid Grid.Row="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <Border BorderBrush="#CCCCCC"
-                                        Margin="15 0 10 10" BorderThickness="1">
-                                    <Image Source="../Images/img_home.png"
-                                           PreviewMouseDown="Image_PreviewMouseDown" />
-                                </Border>
-
-                                <Border x:Name="bd" Grid.Column="2" HorizontalAlignment="Left" >
-                                    <TextBlock x:Name="txt" Text="현재 보고 있는 프로젝트.&#10;WPF로 개발했으며 MVVM 디자인 패턴을 적용&#10;데이터베이스는 MSSQL을 사용하고 Entity Framework을 통해 데이터 관리하도록 구현&#10;Style 개별 적용" 
-                                               TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                               Margin="15 0 10 10" Padding="5">
-                                    </TextBlock>
-                                </Border>
-
-                            </Grid>
-                        </Grid>
-                    </Border>-->
-
-                    <!-- #endregion 레이아웃 1 -->
-
-
-                    <!-- #region 레이아웃 2 -->
-
-                    <Border BorderThickness="2" CornerRadius="5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                        <Setter Property="BorderBrush" Value="DarkGray" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                        <Setter Property="BorderBrush" Value="Gray" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="130" />
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="160" />
-                                <ColumnDefinition Width="160" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <!--#region No -->
-                            <Border Background="DarkGray" HorizontalAlignment="Left" CornerRadius="5 0 0 0">
-                                <TextBlock Text="{Binding PortfolioID, StringFormat={}{0:D2}}" VerticalAlignment="Bottom" Foreground="White" FontWeight="Bold" 
-                                           FontSize="25" Margin="14 9 12 5" />
-                            </Border>
-                            <!--#endregion-->
-
-                            <!--#region Title -->
-                            <Border Background="#22343F" Grid.Column="1">
-                                <TextBlock Text="{Binding PortfolioName}" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"
-                                       FontSize="16" Margin="20 9 0 6" />
-                            </Border>
-                            <!--#endregion-->
-
-                            <Border Background="#22343F" Grid.Column="2">
-                                <TextBlock Foreground="White" VerticalAlignment="Center"
-                                           FontSize="16" Margin="0 9 0 6" Grid.Column="2">
-                                <Run Text="DataBase :" />
-                                <Run Text="{Binding DataBaseName}" />
-                                </TextBlock>
-                            </Border>
-
-                            <Border Background="#22343F" Grid.Column="3">
-                                <TextBlock Foreground="White" VerticalAlignment="Center"
-                                        FontSize="16" Margin="0 9 0 6" Grid.Column="3">
-                                <Run Text="Tag :" />
-                                <Run Text="{Binding DevelopType}" />
-                                </TextBlock>
-                            </Border>
-
-                            <Border Background="#22343F" CornerRadius="0 5 0 0" Grid.Column="4">
-                                <TextBlock Text="Run" Foreground="#00CCFF" FontWeight="Bold" TextDecorations="Underline"
-                                           Cursor="Hand"
-                                           FontSize="16" Margin="14 0">
-                                    <Hyperlink Command="" NavigateUri="https://naver.com" />
-                                </TextBlock>
-                            </Border>
-
-                            <Border Background="DarkGray" CornerRadius="0 0 5 5" Grid.Row="1" Grid.ColumnSpan="5" >
-                                <Grid Margin="0 12 0 0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="170" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Border BorderBrush="#777777"
-                                            Margin="15 1 10 14" BorderThickness="1">
-                                        <Image Source="{Binding ThumbPath}" Stretch="Fill" Cursor="Hand"
-                                               Margin="5"
-                                               PreviewMouseDown="Image_PreviewMouseDown" />
-                                    </Border>
-
-                                    <TextBlock x:Name="txt" Text="{Binding PortfolioDescription}" 
-                                               TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                               LineStackingStrategy="BlockLineHeight" 
-                                               MaxWidth="500" LineHeight="20" Margin="15 2 10 10" Padding="1" Grid.Column="1" >
-                                    </TextBlock>
-
-                                </Grid>
-                            </Border>
-                            
-                        </Grid>
-                    </Border>
-                    
-                    <!-- #endregion 레이아웃 2 -->
-
-                </DataTemplate>
-            </ListBox.ItemTemplate>
         </ListBox>
 
         <Border Background="#212529" VerticalAlignment="Top" Height="19" Margin="5,37,75,40" Grid.Row="2" />
 
-        <!--#region 조회 UI -->
-        <Border VerticalAlignment="Top" HorizontalAlignment="Right"
-        BorderBrush="DarkGray"
-        BorderThickness="1"  Margin="0 20 60 0" Grid.Row="2">
-            <TextBlock Text=" 조회 UI (이름, DB, Tag) " Style="{StaticResource Title_Style}" Margin="3" />
-        </Border>
+        <!--#region 정렬 방식 라디오 버튼 예정 -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="61 20" Grid.Row="2">
+            <Menu:Btn Style="{StaticResource OptionStyle}" Tag="A" Checked="Btn_Checked" >
+                <Grid>
+                    <TextBlock Text="1" />
+                    <Image Source="../Images/Grid4.png" Stretch="Fill" />
+                </Grid>
+            </Menu:Btn>
+            <Menu:Btn Style="{StaticResource OptionStyle}" Tag="B" Margin="5 0 0 0" Checked="Btn_Checked">
+                <Image Source="../Images/Bar4.png" Stretch="Fill" />
+            </Menu:Btn>
+        </StackPanel>
         <!--#endregion-->
 
-        <!--#region 정렬 방식 라디오 버튼 예정 -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="61 20" Grid.Row="2">
-            <Border BorderBrush="LightGray" BorderThickness="1" Height="25" Width="25"  />
-            <Border BorderBrush="LightGray" BorderThickness="1" Height="25" Width="25" Margin="7 0 0 0" />
-        </StackPanel>
+        <!--#region 조회 UI -->
+        <Border VerticalAlignment="Top" HorizontalAlignment="Right"
+                BorderBrush="DarkGray"
+                BorderThickness="1"  Margin="0 20 60 0" Grid.Row="2">   
+            <TextBlock Text=" 조회 UI (이름, DB, Tag) " Style="{StaticResource Title_Style}" Margin="3" />
+        </Border>
         <!--#endregion-->
 
     </Grid>

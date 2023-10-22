@@ -15,7 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
-            <RowDefinition Height="43" />
+            <RowDefinition Height="45" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -38,17 +38,22 @@
 
                 <TextBlock Text="ID" Style="{StaticResource Header_Style}" />
                 <TextBox Text="{Binding UserID, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" 
+                         IsEnabled="{Binding CanInput}"
                          Height="24" Margin="0,3,5,3" Grid.Column="1" />
 
                 <TextBlock Text="Password" Style="{StaticResource Header_Style}" Grid.Row="1" />
                 <PasswordBox h:PasswordHelper.Attach="True"
                              h:PasswordHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             IsEnabled="{Binding CanInput}"
                              VerticalContentAlignment="Center" 
                              Height="24" Margin="0,3,5,3" Grid.Row="1" Grid.Column="1" />
 
-                <Button Content="Log in" HorizontalAlignment="Right" 
+                <Button x:Name="DoLogin" Content="Log in" HorizontalAlignment="Right" 
+                        Height="26" Width="70" Margin="0,3,80,3" Grid.Row="2" Grid.Column="1"
+                        Command="{Binding LoginCommand, UpdateSourceTrigger=Explicit}"/>
+                <Button x:Name="DoLogout" Content="Log out" HorizontalAlignment="Right" 
                         Height="26" Width="70" Margin="0,3,5,3" Grid.Row="2" Grid.Column="1"
-                        Command="{Binding LoginCommand}"/>
+                        Command="{Binding LogoutCommand, UpdateSourceTrigger=Explicit}"/>
             </Grid>
 
         </Border>

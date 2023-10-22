@@ -103,6 +103,7 @@
     <Compile Include="Utilities\EncryptUtil.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="Utilities\SystemParametersFix.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="ViewModels\CustomerVM.cs" />
     <Compile Include="ViewModels\PortfolioVM.cs" />
@@ -244,6 +245,8 @@
     <Resource Include="Images\transaction_page.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\Bar4.png" />
+    <Resource Include="Images\Grid4.png" />
     <Content Include="Models\PortfolioModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PortfolioModel.Context.cs</LastGenOutput>

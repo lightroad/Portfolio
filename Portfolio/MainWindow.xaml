@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:util="clr-namespace:Portfolio.Utilities"
         xmlns:vm="clr-namespace:Portfolio.ViewModels"
         xmlns:v="clr-namespace:Portfolio.Views"
         xmlns:Menu="clr-namespace:Portfolio.Utilities"
@@ -12,7 +13,8 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        x:Name="CurrentWindow">
 
     <Window.DataContext>
         <vm:NavigationVM />
@@ -32,7 +34,20 @@
             </Setter>
         </Style>
     </Window.Style>
-    
+
+    <Border >
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="BorderThickness" Value="0" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=CurrentWindow, Path=WindowState}" Value="Maximized">
+                        <!--<Setter Property="BorderThickness" Value="6 6 6 54" />-->
+                        <Setter Property="BorderThickness" Value="{Binding Source={x:Static util:SystemParametersFix.WindowResizeBorderThickness}}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        
     <Grid>
     
         <!-- Window Border -->
@@ -84,7 +99,7 @@
 
                 <!--Manage--> 
                 <Menu:Btn Style="{StaticResource BtnStyle}"
-                          Command="{Binding CustomerCommand}"
+                          Command="{Binding LoginCommand}"
                           Grid.Row="2">         
                     <Grid>
                         <Image Source="Images/img_customer.png"
@@ -139,4 +154,7 @@
         <v:ModalPopup x:Name="ModelPopup" Visibility="Collapsed" />
 
     </Grid>
+
+    </Border>
+
 </Window>

@@ -66,7 +66,9 @@ namespace Portfolio.ViewModels
 		private CustomerVM CustomerVM = new CustomerVM();
 		private SettingVM SettingVM = new SettingVM();
 
-		private void Portfolio(object obj) => CurrentView = string.IsNullOrEmpty(App.UserId) == false ? PortfolioVM : (ViewModelBase)LoginVM;
+		private void Portfolio(object obj) => CurrentView = PortfolioVM;
+
+		private void Login(object obj) => CurrentView = LoginVM;
 
 		private void Customer(object obj) => CurrentView = CustomerVM;
 
@@ -79,11 +81,12 @@ namespace Portfolio.ViewModels
 		public NavigationVM() 
 		{
 			PortfolioCommand = new RelayCommand<object>(Portfolio);
+			LoginCommand = new RelayCommand<object>(Login);
 			CustomerCommand = new RelayCommand<object>(Customer);
 			SettingsCommand = new RelayCommand<object>(Setting);
 
 			// Startup Page
-			CurrentView = new LoginVM();
+			CurrentView = new PortfolioVM();
 		}
 	}
 }

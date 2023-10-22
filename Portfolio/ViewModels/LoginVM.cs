@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Security.Cryptography;
+using System.Security.Principal;
 
 namespace Portfolio.ViewModels
 {
@@ -36,14 +37,30 @@ namespace Portfolio.ViewModels
 			set { _accountModel.Password = value; OnPropertyChanged(); }
 		}
 
+		public bool CanInput
+		{
+			get { return string.IsNullOrEmpty(App.UserId); }
+		}
+
 		public ICommand LoginCommand { get; set; }
 
 		private async void Login(object obj) => await DoLogin();
+
+		public ICommand LogoutCommand { get; set; }
+
+		private void Logout(object obj) => DoLogout();
 
 		public LoginVM()
 		{
 			_accountModel = new AccountModel();
 			LoginCommand = new RelayCommand<object>(Login, CanLogin);
+			LogoutCommand = new RelayCommand<Object>(Logout, CanLogout);
+
+			if (string.IsNullOrEmpty(App.UserId) == false)
+			{
+				UserID = App.UserId;
+				Password = "공간채우기용사용하지않는값";
+			}
 		}
 
 		/// <summary>
@@ -54,8 +71,10 @@ namespace Portfolio.ViewModels
 		{
 			App.IsBusyChange(true);
 			var task = Task.Run(() => { return DataEntities.Entities.Accounts.SingleOrDefault(a => a.UserID == UserID); });
+			task.Wait();
 			var account = await task;
-			App.IsBusyChange(false);
+
+			bool LoginResult;
 
 			// 암호화 적용 조건 체크
 			if (account != null && account.EncryptionType != null)
@@ -67,13 +86,13 @@ namespace Portfolio.ViewModels
 				{
 					App.StatusTextChange("로그인 성공");
 					App.UserId = UserID;
-					return true;
+					LoginResult = true;
 				}
 				else
 				{
 					App.StatusTextChange("로그인 실패");
 					App.UserId = string.Empty;
-					return false;
+					LoginResult = false;
 				}
 			}
 
@@ -82,9 +101,12 @@ namespace Portfolio.ViewModels
 			{
 				App.StatusTextChange("로그인 실패");
 				App.UserId = string.Empty;
-				return false;
+				LoginResult = false;
 			}
-			
+
+			App.IsBusyChange(false);
+			OnPropertyChanged("CanInput");
+			return LoginResult;
 		}
 
 		/// <summary>
@@ -94,7 +116,21 @@ namespace Portfolio.ViewModels
 		/// <returns></returns>
 		private bool CanLogin(object _)
 		{
-			return !string.IsNullOrEmpty(UserID) && !string.IsNullOrEmpty(Password);
+			return string.IsNullOrEmpty(App.UserId) && (!string.IsNullOrEmpty(UserID) && !string.IsNullOrEmpty(Password));
 		}
+
+		private void DoLogout()
+		{
+			App.UserId = string.Empty;
+			UserID = string.Empty;
+			Password = string.Empty;
+			OnPropertyChanged("CanInput");
+		}
+
+		private bool CanLogout(object _) 
+		{
+			return string.IsNullOrEmpty(App.UserId) == false;
+		}
+
 	}
 }

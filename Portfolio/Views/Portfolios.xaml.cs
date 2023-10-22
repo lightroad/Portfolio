@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Portfolio.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,9 +26,16 @@ namespace Portfolio.Views
 			InitializeComponent();
 		}
 
+		private void Btn_Checked(object sender, RoutedEventArgs e)
+		{
+			string TypeName = (sender as Btn).Tag.ToString();
+
+			PortfolioList.ItemTemplate = Resources[TypeName] as DataTemplate;
+		}
+
 		private void Image_PreviewMouseDown(object sender, MouseButtonEventArgs e)
 		{
-			
+
 		}
-    }
+	}
 }

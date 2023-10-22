@@ -1,4 +1,5 @@
 ﻿using Portfolio.Models;
+using Portfolio.Utilities;
 using Portfolio.ViewModels;
 using Portfolio.Views;
 using System;
@@ -10,11 +11,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Portfolio
 {
@@ -35,8 +38,8 @@ namespace Portfolio
 		private async void App_StatusTextChanged(string StatusText)
 		{
 			(this.DataContext as NavigationVM).StatusText = StatusText;
-			
-			// 5초간 상태 표시 후 초기화
+
+			// 상태메시지 5초간 표시 후 초기화
 			await Task.Delay(5000);
 			(this.DataContext as NavigationVM).StatusText = string.Empty;
 		}
@@ -72,6 +75,9 @@ namespace Portfolio
 			{
 				WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 			}
+			Thickness a = SystemParameters.WindowResizeBorderThickness;
+			Thickness b = SystemParametersFix.WindowResizeBorderThickness;
+
 		}
 
 		private void CloseApp_Click(object sender, RoutedEventArgs e)
